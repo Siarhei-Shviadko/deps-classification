@@ -1,0 +1,83 @@
+@startuml Domain model
+hide circle
+
+namespace ClassificationService <<Rectangle>> {
+    package Domain {
+        package Shared {
+            class GroupId << ValueObject >> {
+                -value: str
+            }
+            class DocumentTypeId << ValueObject >> {
+                -value: str
+            }
+        }
+
+        package GenAIClassifiers {
+            class GenAIClassifier << Aggregate >> {
+                -id: GenAIClassifierId
+                -tenant_id: TenantId
+                -group_id: EntityId
+                -document_type_id: EntityId
+                -prompt: str
+                -llm_type: str
+                -created_at: datetime
+                -updated_at: datetime
+                +update_prompt(prompt: str): None
+            }
+
+            GenAIClassifier *-- "1" GroupId
+            GenAIClassifier *-- "1" DocumentTypeId
+
+            class GenAIClassifierRepository << Repository >> {
+                +save(GenAIClassifier): None
+            }
+            GenAIClassifierRepository --> GenAIClassifier : retrieves/stores
+        }
+
+        package CustomClassifiers {
+            class CustomClassifier << Aggregate >> {
+                -id: CustomClassifierId
+                -tenant_id: TenantId
+                -group_id: EntityId
+                -endpoint: str
+                -created_at: datetime
+                -updated_at: datetime
+                +update_endpoint(str): None
+            }
+
+            CustomClassifier *-- GroupId
+
+            class CustomClassifierRepository << Repository >> {
+                +save(GenAIClassifier): None
+            }
+
+            CustomClassifierRepository --> CustomClassifier : retrieves/stores
+        }
+    }
+
+    package Application {
+        class GenAIClassifierService << Application >> {
+            -gen_ai_classifier_repository: GenAIClassifierRepository
+            -custom_classifier_repository: CustomClassifierRepository
+            +create(g_id: str, t_id: str, dt_id: str, prompt: str): GenAIClassifier
+            +update_prompt(id: str, g_id: str, t_id: str, dt_id: str, prompt: str): GenAIClassifier
+            +delete(ids: list[str], g_id: str, t_id: str): list[GenAIClassifier]
+        }
+
+        class CustomClassifierService << Application >> {
+            -custom_classifier_repository: CustomClassifierRepository
+            +create(g_id: str, t_id: str, endpoint: str): CustomClassifier
+            +update_endpoint(id: str, g_id: str, t_id: str, endpoint: str): CustomClassifier
+            +delete(ids: list[str], g_id: str, t_id: str): list[CustomClassifier]
+        }
+
+        GenAIClassifierService *-- "1" GenAIClassifierRepository
+        GenAIClassifierService *-- "1" CustomClassifierRepository
+        GenAIClassifierService --> GenAIClassifier : uses
+
+        CustomClassifierService *-- "1" CustomClassifierRepository
+        CustomClassifierService --> CustomClassifier : uses
+    }
+}
+
+@enduml

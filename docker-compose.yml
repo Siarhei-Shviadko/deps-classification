@@ -1,0 +1,16 @@
+version: "3.4"
+
+services:
+  api:
+    image: "classification-dev"
+    container_name: "deps-classification"
+    command: python -m deps_classification serve
+
+  consumer:
+    image: "classification-dev"
+    container_name: "deps-classification-consumer"
+    command: python -m deps_classification dispatch
+
+  migrator:
+    image: "classification-migrator"
+    container_name: "deps-classification-migrator"

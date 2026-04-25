@@ -1,0 +1,53 @@
+databaseChangeLog:
+- changeSet:
+    id: 1
+    author: Valentin Vorobyev
+    changes:
+    - createTable:
+        tableName: gen_ai_classifier
+        columns:
+        - column:
+            constraints:
+              primaryKey: true
+              primaryKeyName: gen_ai_classifier_id
+            name: gen_ai_classifier_id
+            type: VARCHAR
+        - column:
+            constraints:
+              nullable: false
+            name: tenant_id
+            type: VARCHAR
+        - column:
+            constraints:
+              nullable: false
+            name: group_id
+            type: VARCHAR
+        - column:
+            constraints:
+              nullable: false
+            name: document_type_id
+            type: VARCHAR
+        - column:
+            constraints:
+              nullable: false
+            name: prompt
+            type: VARCHAR
+        - column:
+            constraints:
+              nullable: false
+            name: llm_type
+            type: VARCHAR
+        - column:
+            constraints:
+              nullable: false
+            name: created_at
+            type: DATETIME
+        - column:
+            constraints:
+              nullable: false
+            name: updated_at
+            type: DATETIME
+
+    rollback:
+    - dropTable:
+        tableName: gen_ai_classifier

@@ -1,0 +1,67 @@
+@startuml Create Gen AI Classifier
+skinparam sequenceMessageAlign center
+
+participant GenAIClassifierService as GCS
+participant PluginRepository as PR
+participant GenAIClassifierFactory as GCF
+participant GenAIClassifierRepository as GCR
+
+note over GCS
+create(
+    g_id: str, t_id: str, dt_id: str, prompt: str
+): GenAIClassifier
+end note
+
+[o-> GCS ++ : create
+
+== Checks ==
+
+note over PR
+has_plugin_for_group(
+    g_id: str, t_id: str
+): bool
+end note
+
+GCS -> PR ++ : has_plugin_for_group
+opt plugin is added to the group
+    PR --> GCS : True
+
+    [x<-- GCS: raise error
+end
+
+return False
+
+== Gen AI Classifier creation ==
+
+note over GCF
+create(
+    g_id: str, t_id: str, dt_id: str, prompt: str
+): GenAIClassifier
+end note
+
+GCS -> GCF ++ : create
+return GenAIClassifier
+
+== Saving ==
+
+note over GCR
+save(
+    classifier: GenAIClassifier
+): None
+end note
+
+GCS -> GCR ++ : save
+deactivate
+
+== Events Publishing ==
+
+note over GCS
+publish_events(group: GenAIClassifier): None
+end note
+
+GCS -> GCS ++ : publish_events
+deactivate
+
+return GenAIClassifier
+
+@enduml

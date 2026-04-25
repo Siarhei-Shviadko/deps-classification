@@ -1,0 +1,37 @@
+classification:
+  image:
+    path: "/deps-presale-x01/deps-classification"
+  resources: {}
+
+classification_settings:
+  ENV: presale
+
+  LOG_LEVEL: "INFO"
+
+  DATABASE_REQUIRE_SECURE_TRANSPORT: false
+
+  # Object storage
+  S3_BUCKET_NAME: bucket_name
+  S3_ENDPOINT_URL: https://s3.us-east-1.amazonaws.com
+
+migration_settings:
+  DATABASE_REQUIRE_SECURE_TRANSPORT: false
+
+classification_consumer:
+  image:
+    path: "/deps-presale-x01/deps-classification"
+
+migrator:
+  image:
+    path: "/deps-presale-x01/deps-classification-migrator"
+
+helm:
+  helm_logs_job_enabled: false
+
+csi:
+  vault_namespace: 'k8s-presale'
+  roleName: 'k8s-presale'
+  vaultKubernetesMountPath: 'kubernetes-presale'
+
+service_account:
+  serviceAccountName: 'deps-presale'

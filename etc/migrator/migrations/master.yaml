@@ -1,0 +1,9 @@
+databaseChangeLog:
+  - include:
+      file: ./migrations/01-add-group-table.yaml
+  - include:
+      file: ./migrations/02-add-gen-ai-classifier-table.yaml
+  - include:
+      file: ./migrations/03-add-saga-table.yaml
+  - include:
+      file: ./migrations/04-add-gen-ai-classifier-name-column.yaml

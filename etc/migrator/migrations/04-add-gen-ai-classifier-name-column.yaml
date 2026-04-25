@@ -1,0 +1,51 @@
+databaseChangeLog:
+
+- changeSet:
+    id: 1
+    author: Oleksandr Rez
+    changes:
+    - addColumn:
+        columns:
+        - column:
+            name: name
+            type: VARCHAR
+        tableName: gen_ai_classifier
+
+    rollback:
+    - dropColumn:
+        columnName: name
+        tableName: gen_ai_classifier
+
+
+- changeSet:
+    id: 2
+    author: Oleksandr Rez
+    changes:
+    - sql:
+        sql: "UPDATE gen_ai_classifier SET name = gen_ai_classifier_id"
+
+    rollback:
+    - sql:
+        sql: "UPDATE gen_ai_classifier SET name = NULL"
+
+
+- changeSet:
+    id: 3
+    author: Oleksandr Rez
+    changes:
+    - addNotNullConstraint:
+        columnName: name
+        tableName: gen_ai_classifier
+    - addUniqueConstraint:
+        columnNames: name, group_id
+        tableName: gen_ai_classifier
+        constraintName: gen_ai_classifier_unique_name_group_id
+
+    rollback:
+    - dropNotNullConstraint:
+        columnName: name
+        tableName: gen_ai_classifier
+    - dropUniqueConstraint:
+        tableName: gen_ai_classifier
+        constraintName: gen_ai_classifier_unique_name_group_id
+
