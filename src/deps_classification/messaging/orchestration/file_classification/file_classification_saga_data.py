@@ -37,6 +37,7 @@ class FileClassificationSagaData(SagaData):
         needs_extraction: bool = False,
         assigned_to_me: bool = False,
         metadata: dict[str, Any] | None = None,
+        label_ids: list[str] | None = None,
         start_processing: bool = False,
         *,
         document_id: str | None = None,
@@ -56,6 +57,7 @@ class FileClassificationSagaData(SagaData):
         self.needs_extraction = needs_extraction
         self.assigned_to_me = assigned_to_me
         self.metadata = metadata
+        self.label_ids = label_ids
         self.start_processing = start_processing
 
         self.document_name = document_name
@@ -86,6 +88,7 @@ class FileClassificationSagaData(SagaData):
                     language=self.language,
                     llm_type=self.llm_type,
                     metadata=self.metadata,
+                    label_ids=self.label_ids,
                     assigned_to_me=self.assigned_to_me,
                     start_processing=self.start_processing,
                 ),
@@ -140,6 +143,7 @@ class FileClassificationSagaData(SagaData):
             "needs_extraction": self.needs_extraction,
             "assigned_to_me": self.assigned_to_me,
             "metadata": self.metadata,
+            "label_ids": self.label_ids,
             "start_processing": self.start_processing,
             "document_id": self.document_id,
             "document_type_id": self.document_type_id,
@@ -165,6 +169,7 @@ class FileClassificationSagaData(SagaData):
             needs_extraction=raw_data["needs_extraction"],
             assigned_to_me=raw_data["assigned_to_me"],
             metadata=raw_data["metadata"],
+            label_ids=raw_data["label_ids"],
             start_processing=raw_data["start_processing"],
             document_id=raw_data["document_id"],
             document_type_id=raw_data["document_type_id"],

@@ -69,6 +69,7 @@ class DocumentProcessingService:
         needs_extraction: bool = False,
         assigned_to_me: bool = False,
         metadata: dict[str, Any] | None = None,
+        label_ids: list[str] | None = None,
         start_processing: bool = False,
     ) -> None:
         data = FileClassificationSagaData(
@@ -85,6 +86,7 @@ class DocumentProcessingService:
             needs_extraction=needs_extraction,
             assigned_to_me=assigned_to_me,
             metadata=metadata,
+            label_ids=label_ids,
             start_processing=start_processing,
             routing_info=routing_info,
         )

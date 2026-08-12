@@ -20,6 +20,7 @@ class ClassifyFile(Command):
     needs_extraction: bool = False
     assigned_to_me: bool = False
     metadata: dict[str, Any] | None = None
+    label_ids: list[str] | None = None
     start_processing: bool = False
 
 

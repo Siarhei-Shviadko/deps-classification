@@ -194,6 +194,7 @@ def classify_file_handler(
         needs_extraction=command.needs_extraction,
         assigned_to_me=command.assigned_to_me,
         metadata=command.metadata,
+        label_ids=command.label_ids,
         start_processing=command.start_processing,
         routing_info=command_message.correlation_headers,
     )
