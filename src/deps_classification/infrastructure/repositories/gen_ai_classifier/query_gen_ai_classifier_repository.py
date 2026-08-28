@@ -24,13 +24,11 @@ class QueryGenAIClassifierRepository(IQueryGenAIClassifierRepository):
         tenant_id: str,
     ) -> list[GenAIClassifierDisplayInfo]:
         query = select(
-            [
-                gen_ai_classifier_table.c.gen_ai_classifier_id,
-                gen_ai_classifier_table.c.document_type_id,
-                gen_ai_classifier_table.c.prompt,
-                gen_ai_classifier_table.c.llm_type,
-                gen_ai_classifier_table.c.name,
-            ],
+            gen_ai_classifier_table.c.gen_ai_classifier_id,
+            gen_ai_classifier_table.c.document_type_id,
+            gen_ai_classifier_table.c.prompt,
+            gen_ai_classifier_table.c.llm_type,
+            gen_ai_classifier_table.c.name,
         ).where(
             and_(
                 gen_ai_classifier_table.c.group_id == group_id,
@@ -39,7 +37,7 @@ class QueryGenAIClassifierRepository(IQueryGenAIClassifierRepository):
         )
 
         with self._db.connection() as conn:
-            return GenAIClassifiersInfoMapper.from_gen_ai_classifier_rows(conn.execute(query).fetchall())
+            return GenAIClassifiersInfoMapper.from_gen_ai_classifier_rows(conn.execute(query).mappings().fetchall())
 
     def find_all_classifier_display_info_of_document_type(
         self,
@@ -47,13 +45,11 @@ class QueryGenAIClassifierRepository(IQueryGenAIClassifierRepository):
         tenant_id: str,
     ) -> list[GenAIClassifierDisplayInfo]:
         query = select(
-            [
-                gen_ai_classifier_table.c.gen_ai_classifier_id,
-                gen_ai_classifier_table.c.document_type_id,
-                gen_ai_classifier_table.c.prompt,
-                gen_ai_classifier_table.c.llm_type,
-                gen_ai_classifier_table.c.name,
-            ],
+            gen_ai_classifier_table.c.gen_ai_classifier_id,
+            gen_ai_classifier_table.c.document_type_id,
+            gen_ai_classifier_table.c.prompt,
+            gen_ai_classifier_table.c.llm_type,
+            gen_ai_classifier_table.c.name,
         ).where(
             and_(
                 gen_ai_classifier_table.c.document_type_id == document_type_id,
@@ -62,4 +58,4 @@ class QueryGenAIClassifierRepository(IQueryGenAIClassifierRepository):
         )
 
         with self._db.connection() as conn:
-            return GenAIClassifiersInfoMapper.from_gen_ai_classifier_rows(conn.execute(query).fetchall())
+            return GenAIClassifiersInfoMapper.from_gen_ai_classifier_rows(conn.execute(query).mappings().fetchall())
