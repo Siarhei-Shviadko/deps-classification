@@ -32,7 +32,7 @@ class UoWCommandGroupRepository(ICommandGroupRepository):
 
     def group_of_id(self, group_id: str, tenant_id: str) -> Group | None:
         query = (
-            select(self.group_table)
+            select(*self.group_table)
             .select_from(self.joined_tables)
             .where(
                 and_(
@@ -43,15 +43,15 @@ class UoWCommandGroupRepository(ICommandGroupRepository):
             )
         )
 
-        rows = self._connection.execute(query)
+        rows = self._connection.execute(query).mappings().fetchall()
 
-        if rows.rowcount < 1:
+        if not rows:
             return None
 
-        return GroupMapper.from_dict(rows.fetchall())
+        return GroupMapper.from_dict(rows)
 
     def has_group_with_document_type(self, group_id: str, document_type_id: str) -> bool:
-        query = select([group_document_types_table.c.document_type_id]).where(
+        query = select(group_document_types_table.c.document_type_id).where(
             and_(
                 group_document_types_table.c.group_id == group_id,
                 group_document_types_table.c.document_type_id == document_type_id,

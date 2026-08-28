@@ -26,10 +26,10 @@ class SagaInstanceRepository(ISagaInstanceRepository):
         return saga_instance
 
     def find(self, saga_id: str) -> SagaInstance:
-        query = select([saga_table]).where(saga_table.c.saga_id == saga_id)
+        query = select(saga_table).where(saga_table.c.saga_id == saga_id)
 
         with self.db.connection() as connection:
-            saga_instance_row = connection.execute(query).fetchone()
+            saga_instance_row = connection.execute(query).mappings().fetchone()
 
         if not saga_instance_row:
             raise NotFoundError(f"Saga instance with saga_id = {saga_id} not found.")

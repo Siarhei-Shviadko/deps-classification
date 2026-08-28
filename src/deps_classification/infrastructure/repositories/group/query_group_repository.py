@@ -13,7 +13,7 @@ class QueryGroupRepository(IQueryGroupRepository):
         self._db = database
 
     def exists_group_of_id(self, group_id: str, tenant_id: str) -> bool:
-        query = select([group_table.c.group_id]).where(
+        query = select(group_table.c.group_id).where(
             and_(
                 group_table.c.group_id == group_id,
                 group_table.c.tenant_id == tenant_id,
